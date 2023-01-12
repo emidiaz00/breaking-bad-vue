@@ -1,11 +1,11 @@
 <template>
     <div v-for="quote in quotes" :key="quote.id">
         <ul>
-            <li>{{ quote.quote }}</li>
-            <li>{{ quote.author }}</li>
+            <li>{{ quotes.quote }}</li>
+            <li>{{ quotes.author }}</li>
         </ul>
     </div>
-    <button @click="changeQuote()">
+    <button @click="getRandomQuote">
         Get Quote
     </button>
 </template>
@@ -15,19 +15,17 @@ export default {
     data() {
         return {
             quotes: [],
-            id: ''
+            id: '',
         }
     },
-    mounted() {
-        fetch(`https://api.breakingbadquotes.xyz/v1/quotes/${this.id}`)
-        .then(response => response.json())
-        .then(data => 
-        // asigna la respuesta a una propiedad de un component de vue
-        this.quotes = data)
-    },
     methods: {
-        ramdomId() {
-            this.id = Math.floor(Math.random() * 101)
+        getRandomQuote() {
+            const id = Math.floor(Math.random() * 101);
+            fetch(`https://api.breakingbadquotes.xyz/v1/quotes/${id}`)
+            .then(response => response.json())
+            .then(data => {
+                this.quotes = data[0];
+            });
         }
     }
 }
